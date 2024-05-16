@@ -32,11 +32,21 @@ def run_mask_ips(text: str) -> list[tuple[int, int]]:
 
 
 def run_classify_nsfw(text: str) -> tuple[Any, float]:
-    raise NotImplementedError
+    
+    classification, score = cleaning.classify_nsfw(text)
+    classification = classification[0].split("__label__")[1]
+    score = score[0]
+
+    return classification, score
 
 
 def run_classify_toxic_speech(text: str) -> tuple[Any, float]:
-    raise NotImplementedError
+    
+    classification, score = cleaning.classify_toxic(text)
+    classification = classification[0].split("__label__")[1]
+    score = score[0]
+
+    return classification, score
 
 
 def run_classify_quality(text: str) -> tuple[Any, float]:
@@ -44,13 +54,15 @@ def run_classify_quality(text: str) -> tuple[Any, float]:
 
 
 def run_gopher_quality_filter(text: str) -> bool:
-    raise NotImplementedError
+    
+    return cleaning.classify_quality_heuristic(text)
 
 
 def run_exact_line_deduplication(
     input_files: list[os.PathLike], output_directory: os.PathLike
 ):
-    raise NotImplementedError
+    cleaning.deduplicate_lines(input_files, output_directory)
+    return
 
 
 def run_minhash_deduplication(
